@@ -17,8 +17,6 @@ class Play extends Phaser.Scene {
         // place tile sprite
         this.skyfield = this.add.tileSprite(0, 0, 640, 480, 'skyfield').setOrigin(0, 0);
 
-        // green UI background
-        this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00FF00).setOrigin(0, 0);
         // white borders
         this.add.rectangle(0, 0, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0 ,0);
         this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0 ,0);
@@ -94,7 +92,7 @@ class Play extends Phaser.Scene {
             this.ship01.update();               // update spaceship (x3)
             this.ship02.update();
             this.ship03.update();
-            this.Fastbird.update();             // update Fast bird
+            this.fastbird.update();             // update Fast bird
         }
 
         // check collisions
@@ -110,9 +108,9 @@ class Play extends Phaser.Scene {
             this.p1Rocket.reset();
             this.shipExplode(this.ship01);
         }
-        if (this.checkCollision(this.p1Rocket, this.Fastbird)) {
+        if (this.checkCollision(this.p1Rocket, this.fastbird)) {
             this.p1Rocket.reset();
-            this.shipExplode(this.Fastbird);
+            this.shipExplode(this.fastbird);
         }
     }
 
@@ -127,6 +125,34 @@ class Play extends Phaser.Scene {
             return false;
         }
     }
+    checkCollisionfastbird(rocket, ship) {
+        if( rocket.x + rocket.width > ship.x &&
+            rocket.x < ship.x + ship.width &&
+            rocket.y + rocket.height > ship.y &&
+            rocket.y < ship.y + ship.height) {
+                ship.alpha = 0;
+                this.fastbirdExplode(ship)
+                rocket.reset();
+                ship.reset();  
+        }
+    }
+
+    fastbirdExplode(ship) {
+        // temporarily hide ship
+        ship.alpha = 0;                         
+        // create explosion sprite at ship's position
+        let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
+        boom.anims.play('explode');             // play explode animation
+        boom.on('animationcomplete', () => {    // callback after ani completes
+          ship.reset();                       // reset ship position
+          ship.alpha = 1;                     // make ship visible again
+          boom.destroy();                     // remove explosion sprite
+        });
+        // score add and repaint
+        this.p1Score += 5;
+        this.scoreLeft.text = this.p1Score;       
+        this.sound.play('sfx_poof');
+      }
 
     shipExplode(ship) {
         // temporarily hide ship
@@ -143,6 +169,6 @@ class Play extends Phaser.Scene {
         this.p1Score += ship.points;
         this.scoreLeft.text = this.p1Score; 
         
-        this.sound.play('sfx_explosion');
+        this.sound.play('sfx_poof');
       }
 }
