@@ -10,7 +10,7 @@ class Play extends Phaser.Scene {
         this.load.image('skyfield', './assets/skyfield.png');
         this.load.image('fastbird', './assets/fastbird.png');
         // load spritesheet
-        this.load.spritesheet('explosion', './assets/poof.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
+        this.load.spritesheet('poof', './assets/poof.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 14});
     }
 
     create() {
@@ -41,7 +41,7 @@ class Play extends Phaser.Scene {
         // animation config
         this.anims.create({
             key: 'explode',
-            frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 9, first: 0}),
+            frames: this.anims.generateFrameNumbers('poof', { start: 0, end: 14, first: 0}),
             frameRate: 30
         });
 
@@ -61,7 +61,24 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 100
         }
+
+        // display time
+        let timeConfig = {
+            fontFamily: 'Comic Sans',
+            fontSize: '28px',
+            backgroundColor: '#668cff',
+            color: '#FFFFFF',
+            align: 'center',
+              padding: {
+                top: 5,
+                bottom: 5,
+              },
+            fixedWidth: 100,
+            right: 0,
+          }
+
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, scoreConfig);
+        this.timeLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.formatTime(this.gameClock), timeConfig);
 
         // GAME OVER flag
         this.gameOver = false;
@@ -151,14 +168,14 @@ class Play extends Phaser.Scene {
         // score add and repaint
         this.p1Score += 5;
         this.scoreLeft.text = this.p1Score;       
-        this.sound.play('sfx_poof');
+        this.sound.play('poof');
       }
 
     shipExplode(ship) {
         // temporarily hide ship
         ship.alpha = 0;                         
         // create explosion sprite at ship's position
-        let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
+        let boom = this.add.sprite(ship.x, ship.y, 'poof').setOrigin(0, 0);
         boom.anims.play('explode');             // play explode animation
         boom.on('animationcomplete', () => {    // callback after anim completes
             ship.reset();                         // reset ship position
@@ -171,4 +188,11 @@ class Play extends Phaser.Scene {
         
         this.sound.play('sfx_poof');
       }
+      formatTime(ms) {
+        let sec = ms/1000;
+        let min = Math.floor(sec/60);
+        let seconds = sec%60;
+        seconds = seconds.toString().padStart(2, "0");
+        return `${min}:${seconds}`;
+    }
 }

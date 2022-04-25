@@ -18,9 +18,11 @@ let keyF, keyR, keyLEFT, keyRIGHT;
 // 04/18/2022, project "Bird Bread" took roughly 10 hours
 // Points Breakdown:
 // Redesign the game's artwork, UI, and sound to change its theme/aesthetic (to something other than sci-fi) (60)
-// Implement a new timing/scoring mechanism that adds time to the clock for successful hits (20)
+// Add copyight-free background music to the Play scene (5)
+// Display time remaing (in seconds) (10)
+// Allow the player to control the Rocket after it's fired (5)
 // Create a new spaceship type (w/ new artwork) that's smaller, moves faster, and is worth more points (20)
-// 60 + 20 +20 = 100 points
+// 60 + 5 + 5 + 10 + 20 = 10 points
 
 // Credits Breakdown:
 // Game Sound Effects: https://www.pico-8-edu.com/
