@@ -8,6 +8,9 @@ class Menu extends Phaser.Scene {
         this.load.audio('sfx_select', './assets/sfx_select.wav');
         this.load.audio('sfx_poof', './assets/sfx_poof.wav');
         this.load.audio('sfx_rocket', './assets/sfx_bread.wav');
+        this.load.audio('sfx_background', './assets/sfx_background.wav');
+        // load background image
+        this.load.image('skyfield', './assets/skyfield.png');
     }
 
     create() {
@@ -25,6 +28,8 @@ class Menu extends Phaser.Scene {
             fixedWidth: 0
         }
         
+        // add background
+        this.add.sprite(0,0, 'skyfield').setOrigin(0,0);
         // show menu text
         this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'BIRD BREAD', menuConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/2, 'Use ←→ arrows to move & (F) to fire', menuConfig).setOrigin(0.5);

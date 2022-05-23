@@ -4,6 +4,8 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
+        // load background music
+        this.load.audio('sfx_background','./assets/sfx_background.wav');
         // load images/tile sprites
         this.load.image('rocket', './assets/bread.png');
         this.load.image('spaceship', './assets/bird.png');
@@ -77,8 +79,9 @@ class Play extends Phaser.Scene {
             right: 0,
           }
 
+        this.gameClock = this.game.settings.gameTimer;
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, scoreConfig);
-        this.timeLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.formatTime(this.gameClock), timeConfig);
+        this.timeRight = this.add.text(borderUISize - borderPadding, borderUISize + borderPadding*2, this.formatTime(this.gameClock), timeConfig);
 
         // GAME OVER flag
         this.gameOver = false;
@@ -90,9 +93,24 @@ class Play extends Phaser.Scene {
             this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← to Menu', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
+
+        this.timer = this.time.addEvent(
+            {
+                delay: 1000,
+                callback: () => {
+                    this.gameClock -= 1000; 
+                    this.timeRight.text = this.formatTime(this.gameClock);
+                },
+                scope: this,
+                loop: true
+            }
+        );
     }
 
     update() {
+        if(this.gameStart) {
+            this.sound.play('sfx_background');
+        }
         // check key input for restart / menu
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
             this.scene.restart();
@@ -113,7 +131,7 @@ class Play extends Phaser.Scene {
         }
 
         // check collisions
-        if(this.checkCollision(this.p1Rocket, this.ship03)) {
+        if (this.checkCollision(this.p1Rocket, this.ship03)) {
             this.p1Rocket.reset();
             this.shipExplode(this.ship03);
         }
