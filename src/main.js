@@ -18,13 +18,11 @@ let keyF, keyR, keyLEFT, keyRIGHT;
 // 04/18/2022, project "Bird Bread" took roughly 10 hours
 // Points Breakdown:
 // Redesign the game's artwork, UI, and sound to change its theme/aesthetic (to something other than sci-fi) (60)
-// Add copyright-free background music to the Play scene (5)
 // Display time remaining (in seconds) (10)
 // Allow the player to control the Rocket after it's fired (5)
 // Create a new spaceship type (w/ new artwork) that's smaller, moves faster, and is worth more points (20)
-// 60 + 5 + 5 + 10 + 20 = 100 points
+// 60 + 5 + 10 + 20 = 95 points
 
 // Credits Breakdown:
 // Game Sound Effects: https://www.pico-8-edu.com/
-// Background Music: https://www.youtube.com/watch?v=ox_T5Ia_Y0A by super noot ensemble
 // All Art: made by me (Sam Tancio) using the Procreate app on iPad Pro
